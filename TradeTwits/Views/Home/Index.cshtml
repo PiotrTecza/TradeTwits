@@ -1,0 +1,93 @@
+﻿@model string
+
+<div ng-controller="HomeController" nv-file-drop="" uploader="uploader" filters="queueLimit, customFilter">
+
+    <div id="messageDiv" class="row">
+        <div class="col-md-2"></div>
+        <div class="col-xs-8">
+            <div>
+                <textarea ng-autocomplete="textcomplete(target)" class="autocomplete col-xs-12" rows="5" placeholder="Share an idea (use $ before ticker: e.g. $SYMBL)" id="twit" ng-model="twit" ng-enter="sendMessage()"></textarea>
+            </div>
+
+            <div class="col-md-4">
+                <input type="file" nv-file-select="" uploader="uploader" class="filestyle" data-buttonname="btn-primary" />
+            </div>
+            <div class="col-md-6" style="margin-bottom: 20px">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th width="50%">Nazwa</th>
+                            @*<th ng-show="uploader.isHTML5">Rozmiar</th>*@
+                            <th ng-show="uploader.isHTML5">Progres</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in uploader.queue">
+                            <td><strong>{{ item.file.name }}</strong></td>
+                            @*<td ng-show="uploader.isHTML5" nowrap>
+                                {{ item.file.size/1024/1024|number:2 }} MB
+                            </td>*@
+                            <td ng-show="uploader.isHTML5">
+                                <div class="progress" style="margin-bottom: 0;">
+                                    <div class="progress-bar" role="progressbar"
+                                         ng-style="{ 'width': item.progress + '%' }"></div>
+                                </div>
+                            </td>
+                            @*<td class="text-center">
+                                    <span ng-show="item.isSuccess">
+                                        <i class="glyphicon glyphicon-ok">
+                                        </i>
+                                    </span>
+                                    <span ng-show="item.isCancel">
+                                        <i class="glyphicon
+                                    glyphicon-ban-circle"></i>
+                                    </span>
+                                    <span ng-show="item.isError">
+                                        <i class="glyphicon glyphicon-remove">
+                                        </i>
+                                    </span>
+                                </td>*@
+                            <td nowrap>
+                                @*<button type="button" class="btn btn-success btn-xs"
+                                            ng-click="item.upload()" ng-disabled="item.isReady ||
+                                     item.isUploading || item.isSuccess">
+                                        <span class="glyphicon glyphicon-upload"></span> Upload
+                                    </button>*@
+                                <button type="button" class="btn btn-danger btn-xs"
+                                        ng-click="item.remove()">
+                                    <span class="glyphicon glyphicon-trash"></span> Remove
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary" ng-click="sendMessage()" ng-hide="uploader.getNotUploadedItems().length" ng-disabled="!twit">Share</button>
+                <button class="btn btn-primary" ng-click="uploader.uploadAll()" ng-show="uploader.getNotUploadedItems().length" ng-disabled="!twit">Share</button>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+
+        @*<input type="file" ngf-select="" ng-model="picFile" name="file" accept="image/*" ngf-change="generateThumb(picFile[0], $files)" required="">
+            <img ng-show="picFile[0] != null" ngf-src="picFile[0]" class="thumb">*@
+    </div>
+    <div class="col-md-2">
+    </div>
+    <div class="col-xs-8">
+        <div id="messages" ng-controller="TwitController">
+            <div ng-repeat="twit in twits">
+                <div ng-include="'@Url.Content("~/Static/TwitTemplate.html")'"></div>
+            </div>
+        </div>
+        <div class="text-center" ng-show="isLoading">
+            <img src="~/Content/images/loading.gif" />
+        </div>
+    </div>
+    <div class="col-md-2">
+    </div>
+</div>
+
+
+

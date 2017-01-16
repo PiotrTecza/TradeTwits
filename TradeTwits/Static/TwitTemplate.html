@@ -1,0 +1,68 @@
+﻿<hr />
+<div class="row">
+    <div class="col-sm-1 col-xs-2">
+        <img src="https://www.gravatar.com/avatar/{{twit.GravatarHash}}?size=50" />
+    </div>
+    <div class="col-sm-11 col-xs-10">
+        <div class="row">
+            <div class="col-xs-4"><a href="/{{twit.UserName}}">{{twit.UserName}}</a></div>
+            <div class="col-xs-8 text-right">{{parseDate(twit.CreatedAt)}}</div>
+        </div>
+        <div class="row">
+            <div twit-input="twit.Message" class="col-xs-12"></div>
+        </div>
+        <div class="row twit-image-wrapper" ng-show="twit.BigImageURL">
+            <a href="{{twit.BigImageURL}}" target="_blank"><img src="{{twit.MediumImageURL}}" /></a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <a href="" ng-click="twit.CommentsVisible = !twit.CommentsVisible" style="text-decoration:none">
+            <i class="glyphicon glyphicon-comment"></i>
+            <span>{{twit.Comments.length}}</span>
+        </a>
+        <span> | </span>
+        <a href="" class="unliked" ng-click="likeTwit(twit)" ng-show="!twit.IsLiked && twit.UserName != loggedInUserName" style="text-decoration:none">
+            <i class="glyphicon glyphicon-hand-up"></i>
+        </a>
+        <a href="" ng-click="likeTwit(twit)" ng-show="twit.IsLiked && twit.UserName != loggedInUserName" style="text-decoration:none">
+            <i class="glyphicon glyphicon-hand-up"></i>
+        </a>
+        <span>{{twit.LikesCount}}</span>
+    </div>
+</div>
+<div id="comments" ng-show="twit.CommentsVisible">
+    <div class="row">
+        <div class="col-xs-10">
+            <textarea rows="1" ng-autocomplete="textcomplete(target)" class="autocomplete form-control maxwidth" placeholder="Write your comment" ng-model="twit.Comment" ng-enter="addComment($index)"></textarea>
+        </div>
+    </div>
+    <div ng-repeat="comment in twit.Comments | orderBy:'CreatedAt':true" style="border-bottom:1px dashed #D3D3D3">
+        <div class="row">
+            <div class="col-sm-1 col-xs-2">
+                <img src="https://www.gravatar.com/avatar/{{comment.GravatarHash}}?size=50" />
+            </div>
+            <div class="col-sm-11 col-xs-10">
+                <div class="row">
+                    <div class="col-xs-4"><a href="/{{comment.UserName}}">{{comment.UserName}}</a></div>
+                    <div class="col-xs-8 text-right">{{parseDate(comment.CreatedAt)}}</div>
+                </div>
+                <div class="row">
+                    <div twit-input="comment.Message" class="col-xs-12"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <a href="" class="unliked" ng-click="likeComment(comment,twit.Id)" ng-show="!comment.IsLiked && comment.UserName != loggedInUserName" style="text-decoration:none">
+                    <i class="glyphicon glyphicon-hand-up"></i>
+                </a>
+                <a href="" ng-click="likeComment(comment,twit.Id)" ng-show="comment.IsLiked && comment.UserName != loggedInUserName" style="text-decoration:none">
+                    <i class="glyphicon glyphicon-hand-up"></i>
+                </a>
+                <span>{{comment.LikesCount}}</span>
+            </div>
+        </div>
+    </div>
+</div>

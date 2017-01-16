@@ -1,0 +1,43 @@
+﻿@using Microsoft.AspNet.Identity
+@{
+    var gravatarCookie = Request.Cookies["Gravatar"];
+    string gravatar = gravatarCookie != null ? gravatarCookie.Value : "";
+}
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" role="button" aria-expanded="false">
+                    <img class="img-circle" src='@("https://www.gravatar.com/avatar/"+gravatar+"?size=25")'>
+                    <span>@User.Identity.GetUserName()</span><span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li>
+                        <a href="/@User.Identity.GetUserName()">My Profile</a>
+                    </li>
+                    <li>
+                        @Html.ActionLink("Personal Info", "PersonalInfo", "Home")
+                    </li>
+                    <li>
+                        @Html.ActionLink("Manage Account", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })
+                    </li>
+                    <li>
+                        @Html.ActionLink("Blocked Users", "Blocked", "Home")
+                    </li>
+                    <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+                </ul>
+            </li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}

@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeTwits</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <style>
+        .searchList li {
+            border-top:none;
+        }
+        li .firstStock {
+            border-top: 1px dashed black;
+        }
+    </style>
+
+</head>
+<body>
+    <div ng-app="tradetwitsApp" ng-cloak style="height:100%">
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("TradeTwits", "Index", "Home", null, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    @if (Request.IsAuthenticated)
+                    {
+                        <script type="text/ng-template" id="customTemplate.html">
+                            <a ng-class="{'firstStock': match.model.IsFirstStock}">
+                                <img ng-src="https://www.gravatar.com/avatar/{{match.model.Gravatar}}?size=50" width="26" ng-show="match.model.Gravatar">
+                                <span bind-html-unsafe="match.label | typeaheadHighlight:query"></span>
+                            </a>
+                        </script>
+                        <div class="col-sm-4 col-md-4 col-sm-offset-3 col-md-offset-3">
+                            <div class="input-group navbar-form searchList" ng-controller="SearchController">
+                                <input type="text" ng-model="selectedItem" placeholder="Symbol($KGHM) lub użytkownik" typeahead="item.UserName as item.DisplayName for item in getStocks($viewValue)"
+                                       class="form-control" typeahead-template-url="customTemplate.html" typeahead-on-select='onSelect($item, $model, $label)'>
+                                <div class="input-group-btn">
+                                    <button type="submit" ng-click="redirectToItem(selectedItem)" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @Html.Partial("_LoginPartial")
+                </div>
+            </div>
+        </div>
+        <div class="container body-content">
+            @RenderBody()
+        </div>
+        @RenderSection("asideMenu", required: false)
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/utils")
+    <script src="~/SignalR/hubs"></script>
+
+    @Scripts.Render("~/bundles/angularjs")
+    @Scripts.Render("~/bundles/angularjs-file-upload")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script>
+        tradetwitsApp.value('userName', "@User.Identity.Name");
+    </script>
+
+</body>
+</html>

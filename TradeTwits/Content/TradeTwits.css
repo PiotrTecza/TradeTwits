@@ -1,0 +1,96 @@
+﻿#twit, .autocomplete{
+    margin-right:10px;
+    color:rgb(137,137,137);
+    resize:none;
+}
+
+#messageDiv{
+    margin:10px;
+}
+
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}
+
+.followCheckbox a{
+    text-decoration:none;
+    color:yellow;
+    font-size:20px;
+}
+
+.followCheckbox a span{
+    vertical-align:text-top;
+    color:initial;
+}
+
+.gravatar-container, .userinfo-container{
+    float:left;
+    margin-right:20px;
+}
+
+.userdetails-top{
+    padding: 50px 0px;
+}
+
+.userdetails-top:after{
+    clear:both;
+    content:'.';
+    visibility:hidden;
+    display:block;
+    height:0;
+}
+
+.follow-button button,.block-button button {
+    width:150px;
+}
+
+.follow-text, .block-text{
+    position:relative;
+    top:-0.3em;
+}
+
+.follow-button .glyphicon{
+    color:yellow;
+    font-size:1.5em;
+}
+
+.block-button .blocked .glyphicon{
+    color:red;
+    font-size:1.5em;
+}
+
+.block-button .unblocked .glyphicon{
+    font-size:1.5em;
+}
+
+.user-stats .badge{
+    background-color:white;
+    color:blue;
+}
+
+.unliked .glyphicon{
+    color:gray;
+}
+
+form .thumb {
+  width: 64px;
+  height: 64px;
+  float: none;
+  position: relative;
+  top: 7px;
+}
+
+.thumb {
+  float: none;
+  width: 64px;
+  height: 64px;
+  position: relative;
+  padding-right: 10px;
+}
+
+.twit-image-wrapper img{
+    max-width:100% !important;
+    height:auto;
+    display:block;
+    border-style: none;
+}

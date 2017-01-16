@@ -1,0 +1,115 @@
+﻿@model StockViewModel
+@using TradeTwits.Models
+@using GravatarHelper.Extensions
+
+@section scripts{
+    <script type="text/javascript">
+        tradetwitsApp.factory('stockDetailsData', function () {
+            return {
+                userName : @Html.Raw(Json.Encode(Model.UserName)),
+                isFollowed: @Json.Encode(Model.IsFollowed),
+                twitsCount: @Model.TwitsCount,
+                followersCount: @Model.Followers
+                };
+        })
+    </script>
+}
+
+
+
+<div ng-controller="StockController">
+    <div class="userdetails-top">
+        <div class="userinfo-container">
+            <div>
+                <h2>@Model.FullName<small> @Model.Category</small></h2>
+                <h4>@Model.Name (@Model.UserName)</h4>
+                <h4>@Model.Price</h4>
+                <h4>@Model.ChangeAmount (@Model.Change %)</h4>
+                <h4>{{price}}, {{change}}, {{changeAmount}}</h4>
+                <div class="follow-button">
+                    <button type="button" ng-click="changeFollowed()" ng-show="isFollowed" class="btn btn-default btn-lg">
+                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span> <span class="follow-text">Following</span>
+                    </button>
+                    <button type="button" ng-click="changeFollowed()" ng-show="!isFollowed" class="btn btn-default btn-lg">
+                        <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> <span class="follow-text">Follow</span>
+                    </button>
+                </div>
+</div>
+        </div>
+    </div>
+
+    <div class="btn-group btn-group-lg user-stats" data-toggle="buttons">
+        <label class="btn btn-primary active" ng-click="selectTab(0)">
+            <input type="radio" name="options"> Twits <span class="badge">{{twitsCount}}</span>
+        </label>
+        <label class="btn btn-primary" ng-click="selectTab(1)">
+            <input type="radio" name="options"> Followers <span class="badge">{{followersCount}}</span>
+        </label>
+    </div>
+
+    <div class="col-xs-12">
+        <div id="twits" ng-show="selectedTab == 0">
+            <div ng-repeat="twit in twits">
+                <hr />
+                <div class="row">
+                    <div class="col-sm-1 col-xs-2">
+                        <img src="https://www.gravatar.com/avatar/{{twit.GravatarHash}}?size=50" />
+                    </div>
+                    <div class="col-sm-11 col-xs-10">
+                        <div class="row">
+                            <div class="col-xs-4"><a href="/{{twit.UserName}}">{{twit.UserName}}</a></div>
+                            <div class="col-xs-8 text-right">{{parseDate(twit.CreatedAt)}}</div>
+                        </div>
+                        <div class="row">
+                            <div twit-input="twit.Message" class="col-xs-12"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <a href="" ng-click="twit.CommentsVisible = !twit.CommentsVisible" style="text-decoration:none">
+                            <i class="glyphicon glyphicon-comment"></i>
+                            <span>{{twit.Comments.length}}</span>
+                        </a>
+                    </div>
+                </div>
+                <div id="comments" ng-show="twit.CommentsVisible">
+                    <div ng-repeat="comment in twit.Comments | orderBy:'CreatedAt':true" style="border-bottom:1px dashed #D3D3D3">
+                        <div class="row">
+                            <div class="col-sm-1 col-xs-2">
+                                <img src="https://www.gravatar.com/avatar/{{comment.GravatarHash}}?size=50" />
+                            </div>
+                            <div class="col-sm-11 col-xs-10">
+                                <div class="row">
+                                    <div class="col-xs-4"><a href="/{{comment.UserName}}">{{comment.UserName}}</a></div>
+                                    <div class="col-xs-8 text-right">{{parseDate(comment.CreatedAt)}}</div>
+                                </div>
+                                <div class="row">
+                                    <div twit-input="comment.Message" class="col-xs-12"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="followers" ng-show="selectedTab == 1">
+            <div ng-repeat="user in followers">
+                <hr />
+                <div class="row">
+                    <div class="col-sm-1 col-xs-2">
+                        <img src="https://www.gravatar.com/avatar/{{user.GravatarHash}}?size=50" />
+                    </div>
+                    <div class="col-sm-11 col-xs-10">
+                        <div class="row">
+                            <div class="col-xs-4"><a href="/{{user.UserName}}">{{user.UserName}}</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center" ng-show="!allLoaded" ng-click="loadNext()">
+            <a href="">Load more</a>
+        </div>
+    </div>
+</div>

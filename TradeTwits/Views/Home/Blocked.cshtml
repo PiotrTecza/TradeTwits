@@ -1,0 +1,27 @@
+﻿@model IEnumerable<TradeTwits.Models.BlockedViewModel>
+@using GravatarHelper.Extensions
+
+<div class="col-xs-12" style="padding:10px 0 0 10px">
+
+    @foreach (var item in Model)
+    {
+        <div class=" blockedUser">
+            <div class="row">
+                <div class="col-xs-1 block-button" style="padding-top:10px">
+                    <button remove-blocked="@item.UserName" type="button" class="btn btn-xs btn-default blocked" style="width:80px">
+                        <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div class="col-xs-1">
+                    <img src='@("https://www.gravatar.com/avatar/"+@item.Gravatar+"?size=50")' />
+                </div>
+                <div class="col-xs-4" style="padding-top:10px">
+                    <a href="@("/"+item.UserName)">@item.UserName</a>
+                </div>
+
+            </div>
+            <hr />
+        </div>
+    }
+
+    </div>

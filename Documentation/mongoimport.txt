@@ -1,0 +1,3 @@
+run the following command to import the documents to given collection from csv
+
+C:\mongodb\bin>mongoimport -h ds052837.mongolab.com:52837 -d MongoLab-3 -c AspNetUsers -u MongoLab-3 -p zYnvieA6KF6lRW5TfnSLFTZXAM.78jeK33_VboL_uoA- --file test.csv --type csv --headerline
